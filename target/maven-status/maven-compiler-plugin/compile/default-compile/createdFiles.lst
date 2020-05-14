@@ -1,8 +1,13 @@
 com/paytech/SpringWebService/SpringWebServiceApplication.class
 generated/Kelurahan.class
 generated/DaftarKelurahan.class
+com/paytech/SpringWebService/menghitungbilangan.class
 com/paytech/SpringWebService/Controller/WaktuController.class
+com/paytech/SpringWebService/Pengulangan.class
 generated/DaftarKelurahanRequest.class
+com/paytech/SpringWebService/konfigurasi/KonfigurasiSoap.class
+MenghitungKerucut.class
 generated/Pencarian.class
+com/paytech/SpringWebService/bilangan_bulat.class
 generated/ObjectFactory.class
 generated/DaftarKelurahanResponse.class

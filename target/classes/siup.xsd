@@ -1,7 +1,7 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" 
 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns:tns="http://paytech.com/webservices/siup"
- targetNamespace="http://paytech.com/webservices/siup">
+targetNamespace="http://paytech.com/webservices/siup">
   <xs:element name="id" type="xs:integer"/>
   <xs:element name="kode" type="xs:string"/>
   <xs:element name="nama" type="xs:string"/>

@@ -1,10 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.paytech.SpringWebService.SpringWebServiceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.441 s <<< FAILURE! - in com.paytech.SpringWebService.SpringWebServiceApplicationTests
-contextLoads  Time elapsed: 0.009 s  <<< ERROR!
-java.lang.IllegalStateException: Failed to load ApplicationContext
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'countries' defined in class path resource [com/paytech/SpringWebService/konfigurasi/KonfigurasiSoap.class]: Unsatisfied dependency expressed through method 'defaultWsdl11Definition' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'xsdSiup' defined in class path resource [com/paytech/SpringWebService/konfigurasi/KonfigurasiSoap.class]: Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: class path resource [siup.xsd] has no targetNamespace
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'xsdSiup' defined in class path resource [com/paytech/SpringWebService/konfigurasi/KonfigurasiSoap.class]: Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: class path resource [siup.xsd] has no targetNamespace
-Caused by: java.lang.IllegalArgumentException: class path resource [siup.xsd] has no targetNamespace
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.39 s - in com.paytech.SpringWebService.SpringWebServiceApplicationTests
