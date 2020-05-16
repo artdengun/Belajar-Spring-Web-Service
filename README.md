@@ -977,7 +977,8 @@ fitur :
 	* Buat Folder resources/db
 	* Buat Folder resources/db/migration
 	* Buat Empty file dengan nama `V1.0.0.20201604__Skema_Kelurahan.sql`
-`V1.0.0.20201604__Skema_Kelurahan.sql`
+
+ Isi Dari V1.0.0.20201604__Skema_Kelurahan.sql
 ```sql
 create table kelurahan (
     id INT PRIMARY KEY AUTO_INCREMENT, 
@@ -986,8 +987,9 @@ create table kelurahan (
     kodepos VARCHAR(10) NOT NULL
 );
 
-Cara Check Migration di database `select * from schema_version \G`
 ```
+Cara Check Migration di database `select * from schema_version \G`
+
 3.  Buat Konfigurasi koneksi Database
 
 tambahkan baris berikut di `src/main/resources/application.properties`
