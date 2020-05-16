@@ -740,19 +740,15 @@ jAXB berguna untuk mengenerate file XSD ke file java yang akan menghasilkan File
 DaftarKelurahan.java
 
 ```java
-
 @Data
 public class DaftarKelurahan {
     private List<Kelurahan> kelurahan = new ArrayList<>();
 }
-
-
 ```
 
 DaftarKelurahanRequest.java
 
 ```java
-
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(
@@ -763,26 +759,22 @@ public class DaftarKelurahanRequest {
     private Pencarian pencarian;
     
 }
-
 ```
 
 DaftarKelurahanResponse.java
 
 ```java
-
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "daftarKelurahanResponse")
 public class DaftarKelurahanResponse {
     private DaftarKelurahan daftarKelurahan;
 }
-
 ```
 
 Kelurahan.java
 
 ```java
-
 import lombok.Data;
 
 @Data
@@ -792,13 +784,10 @@ public class kelurahan {
 	private String nama;
 	private String kodepos;
 }
-
-
 ```
 
 Pencarian.java
 ```java
-
 	package com.paytech.SpringWebService.dto;
 
 	import lombok.Data;
@@ -807,8 +796,6 @@ Pencarian.java
 	public class Pencarian {
 	    private String nama;
 	}
-
-
 ```
 
 package-info.java
@@ -822,6 +809,173 @@ package com.paytech.SpringWebService.dto;
 
 import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.bind.annotation.XmlNsForm;
+```
 
+# Akses Database #
+  Berbagai Macam Method
+  * JDBC = Java Databaser Connectivity
+
+  ## JDBC ##
+
+  1. Load Library
+  2. Connect
+  3. Begin Transaction
+  4. Konversi Inpu/ Parameter Menjadi SQL parameter
+  4. Execute SQL
+  5. Commit / Rollback
+  6. ResultSet
+  7. Konversi Ke Object
+  8. Disconnect
+
+contoh yang salah
+
+```java
+
+String username = request.getParameter("username");
+String password = request.getParameter("password");
+
+
+String sql = "select * from t_user where";
+sql +="username='' ";
+sql +="and password ='"+password+"'";
+
+
+ResultSet rs = dbConnection.createStatement(sql).executeQuery();
+```
+
+Jangan sambung SQL seperti di atas, karena rawan SQL Injection.
+Misalnya. username diisi nilai '1';delete from t_user;
+
+Hasilnya :
+* 'select * from t_user where username = '1';delete from t_user;' and password = '123';'
+
+* No Reccord, hapus tabel t_user, error
+
+
+Contoh Yang benar, Menggunakan PreparedStatement
+
+
+```java
+
+String sql = "select * from t_user where";
+sql += "username= ? ";
+sql += "and password =?";
+
+PreparedStatement psLogin = dbConnection.prepareStatement(sql);
+psLogin.setString(1, username);
+psLogin.setString(2, password);
+
+
+ResultSet rs = psLogin.executeQuery();
+```
+
+Keuntungan Menggunakan PreparedStatement:
+
+* Menghindari SQL Injection
+* Lebih Optimal, Karena SQL bisa dicompile dan di-cache oleh library
+database ataupun database server.
+
+
+## ORM : Object Relational Mapping ##
+
+fungsi utama : 
+
+* Mapping antara tabel dan class 
+* konversi dari ResultSet menjadi Object
+* Generate SQL untuk tiap merek/versi database
+
+
+fungsi tambahan : 
+
+* Optimasi eksekusi SQL
+* Cache
+
+Beberapa produk ORM populer:
+
+* Hibernate : sebelumnya opensource independen, kemudian jadi punya JBoss ( Redhat) 
+* Toplink (berbayar) : oracle\
+* EclipseLink (opensource/gratis) : sebelumnya TopLink Essential ( versi community) 
+
+
+Mitos ORM : 
+
+* Lebih lambat : tidak signifikan, masih acceptable
+* SQL tidak optimal : belum tentu, karena programmer ORM lebih paham database daripada rata-rata programmer pengguna database 
+
+
+## Connection and Transaction Management ##
+
+
+Fungsi Utama : 
+
+* Connection Pooling
+   * minumun idle : jumlah minimum yang tetap connect walaupun sedang idle 
+   * max active   : jumlah maksimum koneksi yang boleh dibuat
+   * idle timeout : waktu idle maksimal sebelum disconnect
+   * max wait     : batas waktu menunggu koneksi tersedia, default unlimited
+Kalau lewat max wait belum dapat koneksi, maka akan error.
+
+* Transaction Management
+
+  * Programmatic
+  * Declarative : pakai annotaion di method. seluruh isi method dijalankan dalam satu scope transaction.
+  * Managed transaction : transaction dikelola oleh Transaction Service.
+
+  Fitur Managed Transaction
+
+  * Distributed / XA Transaction / Two Phase Commit : transaction lintas database ( lebih dari satu database) 
+  * Transaction Propagation 
+      
+      * REQUIRED : kalau belum ada transaction, start. kalau sudah ada, ikut. 
+      * REQUIRES_NEQ : kalau sudah ada, pause, jalan di transaction baru, setelah selesai resume  transaction sebelumnya 
+      * MANDATORY : kalau sudah ada, ikut. kalau belum ada. error ( gamau start)
+      * SUPPORTS  : kalau sudah ada, ikut. kalau belum ada , jalan tanpa transcation
+      * NEVER     : kalau sudah ada, error. kalau belum ada, jalan tanpa transaction
+
+## Spring Data JPA ##
+
+fitur : 
+
+* tidak perlu menulis kode program untuk CRUD. 
+* Query method : nama method otomatis dikonversi jadi query.
+
+      contoh : 'List<User> findByNamaContaining(String nama)'
+      akan menghasilkan SQL : 'select * from t_user where nama like %nama%'
+
+* pagination (otomatis)
+* integrasi dengan aplikasi web untuk :
+
+    * konversi id ke object. 'http://localhost/user?id=1'
+    * param untuk paging dan sorting. param 'page','rows','sort' otomatis dikenali
+     
+
+
+## SETUP Spring Data JPA ##
+
+1.  Tambahkan LIbrary di `pom.xml`
+
+    * Database Driver (Mysql)
+    * Migration (flyway)
+    * Spring Data Jpa
+2.  Buat Migration Script
+3.  Buat Konfigurasi koneksi Database
+4.  Buat user database dan databasenya
+5.  Buat entity mapping class dengan tabel
+6.  Buat Dao
+7.  Gunakan di aplikasi web
+
+
+## Konfigurasi Koneksi Database ##
+
+tambahkan baris berikut di `src/main/resources/application.properties`
 
 ```
+        spring.datasource.url=jdbc:mysql://localhost:3306/siupdb?useLegacyDatetimeCode=false&serverTimezone=UTC
+        spring.datasource.username=siupdbuser
+        spring.datasource.password=siup123
+
+        spring.jpa.show-sql=true
+        spring.jpa.properties.hibernate.format_sql=true
+
+```
+
