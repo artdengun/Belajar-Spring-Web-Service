@@ -26,13 +26,63 @@
  3. Membuat Controller
 
 ```java
+
 		@Controller
 		public class WaktuController {
-		    @GetMapping("/waktu")
-		    @ResponseBody
-		    public String sekarang(){
-		       SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
-		       return formatwaktu.format(new Date());
-		    }
+		@GetMapping("/waktu")
+		@ResponseBody
+		public String sekarang(){
+		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
+		return formatwaktu.format(new Date());
+		}
+
+```
+
+ 3. Membuat Controller
+
+```java
+
+		@Controller
+		public class WaktuController {
+		@GetMapping("/waktu")
+		@ResponseBody
+		public String sekarang(){
+		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
+		return formatwaktu.format(new Date());
+		}
+
+```
+
+
+
+ 3. Membuat Controller
+
+```java
+
+		@Controller
+		public class WaktuController {
+		@GetMapping("/waktu")
+		@ResponseBody
+		public String sekarang(){
+		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
+		return formatwaktu.format(new Date());
+		}
+
+```
+
+
+
+ 3. Membuat Controller
+
+```java
+
+		@Controller
+		public class WaktuController {
+		@GetMapping("/waktu")
+		@ResponseBody
+		public String sekarang(){
+		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
+		return formatwaktu.format(new Date());
+		}
 
 ```
