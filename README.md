@@ -29,29 +29,48 @@
 
 		@Controller
 		public class WaktuController {
+
 		@GetMapping("/waktu")
 		@ResponseBody
-		public String sekarang(){
-		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
-		return formatwaktu.format(new Date());
-		}
-		}
+			public String sekarang(){
+			SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
+			return formatwaktu.format(new Date());
+
+			}
+		
 
 ```
 
- 3. Membuat Controller
+ 3. Membuat Controller Untuk Json 
 
 ```java
 
-		@Controller
-		public class WaktuController {
-		@GetMapping("/waktu")
-		@ResponseBody
-		public String sekarang(){
-		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
-		return formatwaktu.format(new Date());
-		}
-		}
+		 
+    @GetMapping("/appinfo")
+    @ResponseBody
+    public Map<String, String> info(@RequestParam String nama){
+        Map<String, String> data = new LinkedHashMap<>();
+        
+        data.put("application.name", "Aplikasi SIUP");
+        data.put("application.version","1.0.0");
+        data.put("last.update", "2020-05-10");
+        data.put("author", nama);       
+        return data;
+    }
+}
+
+```
+
+Panggil Json
+
+```
+	http://localhost:8080/appinfo?nama=DeniGunawan
+``
+
+Untuk merapihkan Fie Json Letakkan pada Application.properties dan perintahnya
+
+```
+spring.jackson.serialization.indent_output=true
 
 ```
 
