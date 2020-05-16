@@ -1,5 +1,4 @@
 # Belajar Spring Web Services
-# Spring-Web-Service
 
 ----------------
 ## TAHAP AWAL ##
@@ -17,9 +16,23 @@
 
 ```
 
- 2. Depedency 
+ 2. Depedency  Awal 
 
 ```
 		Spring-web
+
+```
+
+ 3. Membuat Controller
+
+```java
+		@Controller
+		public class WaktuController {
+		    @GetMapping("/waktu")
+		    @ResponseBody
+		    public String sekarang(){
+		       SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
+		       return formatwaktu.format(new Date());
+		    }
 
 ```
