@@ -16,7 +16,7 @@
 
 ```
 
-#Penjelasan 
+## Penjelasan
 
 * GroupId 	-> Menyatakan Software House Yang membuat aplikasi
 * Artifact	-> Menyatakan Nama Aplikasi Yang dibuat
@@ -30,7 +30,7 @@
 
 ```
 
-#Penjelasan
+## Penjelasan
 
 * Spring-web	-> Package/library Awal yang dibutuhkan Untuk Spring Web
 
@@ -52,7 +52,7 @@
 
 ```
 
-#Penjelasan
+## Penjelasan
 
 * @Controller			-> Class yang menyatakan Bahwa File ini sebagai Controller Proses
 * public class WaktuController	-> Menyatakan Nama File Dari Class yang digunakan
@@ -90,14 +90,16 @@
 }
 
 ```
-#Penjelasan
+## Penjelasan
 
 * public class WaktuController	-> Menyatakan Nama File Dari Class yang digunakan
 * @GetMapping("/appinfo")	-> Menghandle url
 * @ResponseBody			-> Langsung menampilkan output tanpa membutuhkan file lain (HTML template)
 * Map				-> assosiative array yang ada di java yang memiliki key dan value
-
-
+* @RequestParam			-> Menghandle inputan dari External
+* data.put			-> Meletakan/ menempelkan Nilai yang ingin kita tampilkan
+* LinkedHashMap 		-> Salah satu agar Json Terurut Sesuai Dengan TREE yang ada di put.
+* nama				-> mengembalikan nilai nama yang diinput dan menampilkan di author
 * return 			-> Mengembalikan nilai yang dituju
 
 
