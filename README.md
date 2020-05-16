@@ -566,7 +566,7 @@ targetNamespace="http://paytech.com/webservices/siup">
 
 ```
 
-* Untuk melihat hasil akhir ketikan perintah berikut pada url \
+* Untuk melihat hasil akhir ketikan perintah berikut pada url 
 ```java
 	https://localhost:8080/ws/siup.wsdl
 
@@ -574,3 +574,254 @@ targetNamespace="http://paytech.com/webservices/siup">
 ```
 
 
+# IMPLEMENT SOAP ENDPOINT ( HARDCORE ) -> TIDAK MENGGUNAKAN DATABASE
+
+1. Buat FIle di DTO dengan nama KelurahanEndpoint.java
+
+```java
+
+public class KelurahanEndopoint{
+	public List<Kelurahan> cari(String nama) {
+	List<Kelurahan> hasil = new ArrayList<>();
+
+	Kelurahan k1 = new Kelurahan();
+	k1.setId(new BigInteger("1"));
+	k1.setKode("k-001");
+	k1.setNama(nama);
+	k1.setKodepos(new BigInteger("12300"));
+	hasil.add(k1);
+
+	Kelurahan k2 = new Kelurahan();
+	k2.setId(new BigInteger("2"));
+	k2.setKode("k-002");
+	k2.setNama(nama);
+	k2.setKodepos(new BigInteger("12301"));
+	hasil.add(k2);
+	
+	Kelurahan k3 = new Kelurahan();
+	k3.setId(new BigInteger("3"));
+	k3.setKode("k-003);
+	k3.setNama(nama);
+	k3.setKodepos(new BigInteger("12302"));
+	hasil.add(k3);
+
+	return hasil;
+ }
+	@PayloadRoot(localPart = "daftarKelurahanRequest", namespace = "http://paytech.com/webservices/siup")
+    @ResponsePayload
+    public DaftarKelurahanResponse cariKelurahan(@RequestPayload DaftarKelurahanRequest Request){
+            String cariNama= Request.getPencarian().getNama();
+            System.out.println("Mencari Kelurahan Dengan nama " + cariNama);
+            
+            DaftarKelurahanResponse resp = new DaftarKelurahanResponse();
+            DaftarKelurahan soapBody = new DaftarKelurahan();
+            soapBody.setKelurahan(cari(cariNama));
+            resp.setDaftarKelurahan(soapBody);
+            return resp;
+    
+    }
+            
+}
+
+```
+
+tambahkan perintah di KelurahanDaftar.java
+
+```java
+  public void setKelurahan(List<Kelurahan> data ){
+	set.kelurahan = data;
+	}
+```
+
+## Penjelasan
+
+* @RequestPayload -> Request akan diparsing dan dimasukan objeknya
+* @PayloadRoot(localPart = "daftarKelurahanRequest", namespace = "http://paytech.com/webservices/siup") -> root elemen 
+
+
+
+2. Bungkus localpart dalam soapEnvelope
+
+```java
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+		  xmlns:siup="http://paytech.com/webservices/siup">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <siup:daftarKelurahanRequest>
+            <siup:pencarian>
+                <siup:nama>Cili</siup:nama>
+            </siup:pencarian>
+        </siup:daftarKelurahanRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+
+```
+
+#PENJELASAN
+
+* Kita test di Postman. Tipenya POST , body raw , Tipe text/XML
+* jika sudah berjalan Simpan SoapEnlope
+* Simpan di Folder test , Buat Folder Resources 
+* Buat lagi Folder dengan nama SoapRequest
+* buat Emptyfile "kelurahan-request.xml" simpan
+
+Isi FIle Kelurahan-Request.xml
+
+```xml
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+					xmlns:siup="http://paytech.com/webservices/siup">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <siup:daftarKelurahanRequest>
+            <siup:pencarian>
+                <siup:nama>Cilili</siup:nama>
+            </siup:pencarian>
+        </siup:daftarKelurahanRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+```
+
+* buat Emptyfile "kelurahan-response.xml" simpan
+
+
+Isi FIle Kelurahan-Response.xml
+
+```xml
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="https://schemas.xmlsoap.org/soap/enveloper/">
+    <SOAP-ENV:Header />
+    <SOAP-ENV:Body>
+        <ns2:daftarKelurahanResponse xmlns:ns2="http://paytech.com/webservices/siup">
+            <ns2:daftarKelurahan>
+              <ns2:kelurahan>
+	     	<ns2:id>1</ns2:id>
+		<ns2:kode>K-001</ns2:kode>
+		<ns2:nama>Cilili</ns2:nama>
+             	<ns2:kodepos>12300</ns2:kodepos>
+	      </ns2:kelurahan>
+              <ns2:kelurahan>
+	     	<ns2:id>2</ns2:id>
+		<ns2:kode>K-002</ns2:kode>
+		<ns2:nama>Cilili</ns2:nama>
+             	<ns2:kodepos>12301</ns2:kodepos>
+	      </ns2:kelurahan>
+              <ns2:kelurahan>
+	     	<ns2:id>3</ns2:id>
+		<ns2:kode>K-003</ns2:kode>
+		<ns2:nama>Cilili</ns2:nama>
+             	<ns2:kodepos>12302</ns2:kodepos>
+	      </ns2:kelurahan>
+            </ns2:daftarKelurahan>
+          </ns2:daftarKelurahanResponse>
+         </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+
+
+```
+
+# IMPLEMENT SOAP ENDPOINT (DESCRIPTION) -> Koneksi dengan database
+
+jAXB berguna untuk mengenerate file XSD ke file java yang akan menghasilkan File java  (Clean and build) , JAXB akan mendeteksi tipe data sendiri . perintah (Clean) akan menghapus generate dari jaxb
+
+1.  BUAT SOAP ENDPOINT TANPA GENERATE JAXB
+
+  * buat folder DTO(Data Transfer Object) Kemudian buat FIle, 
+	1. DaftarKelurahan.java
+	2. DaftarKelurahanRequest.java
+	3. DaftarKelurahanResponse.java
+	4. Kelurahan.java
+	5. Pencarian.java
+	6. package-info.java
+
+DaftarKelurahan.java
+
+```java
+
+@Data
+public class DaftarKelurahan {
+    private List<Kelurahan> kelurahan = new ArrayList<>();
+}
+
+
+```
+
+DaftarKelurahanRequest.java
+
+```java
+
+@Data
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(
+        name = "daftarKelurahanRequest",
+        namespace = "http://paytech.com/webservices/siup"
+)
+public class DaftarKelurahanRequest {
+    private Pencarian pencarian;
+    
+}
+
+```
+
+DaftarKelurahanResponse.java
+
+```java
+
+@Data
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "daftarKelurahanResponse")
+public class DaftarKelurahanResponse {
+    private DaftarKelurahan daftarKelurahan;
+}
+
+```
+
+Kelurahan.java
+
+```java
+
+import lombok.Data;
+
+@Data
+public class kelurahan {
+	private String id;
+	private String kode;
+	private String nama;
+	private String kodepos;
+}
+
+
+```
+
+Pencarian.java
+```java
+
+	package com.paytech.SpringWebService.dto;
+
+	import lombok.Data;
+
+	@Data
+	public class Pencarian {
+	    private String nama;
+	}
+
+
+```
+
+package-info.java
+```java
+
+@XmlSchema(
+        namespace = "http://paytech.com/webservices/siup",
+        elementFormDefault = XmlNsForm.QUALIFIED)
+
+package com.paytech.SpringWebService.dto;
+
+import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.XmlNsForm;
+
+
+```

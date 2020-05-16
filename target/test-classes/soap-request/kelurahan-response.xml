@@ -1,0 +1,27 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="https://schemas.xmlsoap.org/soap/enveloper/">
+    <SOAP-ENV:Header />
+    <SOAP-ENV:Body>
+        <ns2:daftarKelurahanResponse xmlns:ns2="http://paytech.com/webservices/siup">
+            <ns2:daftarKelurahan>
+              <ns2:kelurahan>
+	     	<ns2:id>1</ns2:id>
+		<ns2:kode>K-001</ns2:kode>
+		<ns2:nama>Cilili</ns2:nama>
+             	<ns2:kodepos>12300</ns2:kodepos>
+	      </ns2:kelurahan>
+              <ns2:kelurahan>
+	     	<ns2:id>2</ns2:id>
+		<ns2:kode>K-002</ns2:kode>
+		<ns2:nama>Cilili</ns2:nama>
+             	<ns2:kodepos>12301</ns2:kodepos>
+	      </ns2:kelurahan>
+              <ns2:kelurahan>
+	     	<ns2:id>3</ns2:id>
+		<ns2:kode>K-003</ns2:kode>
+		<ns2:nama>Cilili</ns2:nama>
+             	<ns2:kodepos>12302</ns2:kodepos>
+	      </ns2:kelurahan>
+            </ns2:daftarKelurahan>
+          </ns2:daftarKelurahanResponse>
+         </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
