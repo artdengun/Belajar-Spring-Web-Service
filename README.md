@@ -35,6 +35,7 @@
 		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
 		return formatwaktu.format(new Date());
 		}
+		}
 
 ```
 
@@ -49,6 +50,7 @@
 		public String sekarang(){
 		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
 		return formatwaktu.format(new Date());
+		}
 		}
 
 ```
@@ -67,6 +69,7 @@
 		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
 		return formatwaktu.format(new Date());
 		}
+		}
 
 ```
 
@@ -83,6 +86,7 @@
 		public String sekarang(){
 		SimpleDateFormat formatwaktu = new SimpleDateFormat("EEEE, dd MMMM yyyy",new Locale("id","ID"));
 		return formatwaktu.format(new Date());
+		}
 		}
 
 ```
