@@ -7,7 +7,7 @@
 
  1. Membuat File 
 	
-```
+```java
 	     
         GroupId     : com.paytech.siup
         Artifact    : Aplikasi-Siup
@@ -18,7 +18,7 @@
 
  2. Depedency  Awal 
 
-```
+```java
 		Spring-web
 
 ```
