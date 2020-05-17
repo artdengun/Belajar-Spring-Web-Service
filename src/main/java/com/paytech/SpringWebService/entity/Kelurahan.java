@@ -1,6 +1,7 @@
 
 package com.paytech.SpringWebService.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,19 +12,23 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Entity @Table(name="kelurahan")
+@Entity @Table(name = "kelurahan")
 public class Kelurahan {
     
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @Column(name = "id")
+    private Integer id;
     
-    @NotNull @NotEmpty 
+    @NotNull @NotEmpty
+    @Column(name = "kode")
     private String kode;
     
     @NotNull @NotEmpty
+    @Column(name = "nama")
     private String nama;
     
     @NotNull @NotEmpty
+    @Column(name = "kodepos")
     private String kodepos;
     
 }

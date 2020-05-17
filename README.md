@@ -1009,6 +1009,97 @@ tambahkan baris berikut di `src/main/resources/application.properties`
     * Buat Database ` create database siupdb; ` ( buat database )
 
 5.  Buat entity mapping class dengan tabel
+   * Buat folder Entity
+	* Pindahkan Kelurahan dari `Dto` ke `entity`
+	
+Isi File `Kelurahan.java`
+```java
+	@Data
+@Entity @Table(name="kelurahan")
+public class Kelurahan {
+    
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    
+    @NotNull @NotEmpty 
+    private String kode;
+    
+    @NotNull @NotEmpty
+    private String nama;
+    
+    @NotNull @NotEmpty
+    private String kodepos;
+    
+}
+	
+```
+
+## Penjelasan ##
+
+	 * Entity -> agar bisa mapping ke database
+	 * @Table(name="kelurahan") -> bisa disamain atau engga untuk nama table
+	 * @Id						   -> primary key
+	 * @GeneratedValue(strategy = GenerationType.AUTO) -> nilainya tidak diisi tapi digenerate Secara Auto 
+	 * @NotNull		    -> kita tambahkan agar jika tidak ada null akan muncul pesan error
+	 * @NotEmpty		    -> khusus String , jika string kosong maka akan muncul pesan error
+
 6.  Buat Dao
-7.  Gunakan di aplikasi web
+	* Buat File Dao
+	  * buat InterfaceFile dengan nama`kelurahanDao.java`
+
+Isi File `KelurahanDao.java`
+
+```java
+public interface KelurahanDao  extends PagingAndSortingRepository<Kelurahan, Integer>{
+    
+}
+
+
+```
+## Penjelasan ##
+
+	*  extends PagingAndSortingRepository<Kelurahan, Integer> -> bawaan class spring untuk memudahkan kita untuk 		coding save, update dan delete
+
+
+Ifi FIle `KelurahanEndPoint,java`
+
+```java
+    
+    @Autowired private KelurahanDao kelurahanDao;
+    
+    
+    public List<Kelurahan> cari(String nama){
+           Iterable<Kelurahan> dataKelurahan = kelurahanDao.findAll();
+           
+           
+         List<Kelurahan> hasil = new ArrayList<>();    
+            for(Kelurahan k : dataKelurahan){
+                hasil.add(k);
+            }
+            return hasil;
+    }
+```
+## Penjelasan ##
+
+
+	*  @Autowired private KelurahanDao kelurahanDao; -> Depedency kemudian dideklarasikan, kemudian akan diisi oleh 	   KelurahanDao
+
+* Buat File sql di test resources
+	* Buat EmptyFile `sample-kelurahan.sql` 
+
+isi data `sample-kelurahan.sql` 
+
+```sql
+	insert into kelurahan (kode, nama, kodepos ) values
+
+	('k-001', 'Kelurahan 001', '05152020'),
+	('k-002', 'Kelurahan 002', '05162020'),
+	('k-003', 'Kelurahan 003', '05172020'),
+	('k-004', 'Kelurahan 004', '05182020'),
+	('k-005', 'Kelurahan 005', '05192020');
+
+```
+	
+
+7.  Gunakan di aplikasi web ( Selesai )
 

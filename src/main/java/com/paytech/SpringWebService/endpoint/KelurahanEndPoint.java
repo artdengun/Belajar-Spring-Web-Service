@@ -16,9 +16,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 
 @Endpoint
-public class KelurahanEndPoint {
-    
-    
+public class KelurahanEndPoint {    
     @Autowired private KelurahanDao kelurahanDao;
     
     
