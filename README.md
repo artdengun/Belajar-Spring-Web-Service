@@ -1001,6 +1001,7 @@ tambahkan baris berikut di `src/main/resources/application.properties`
 
         spring.jpa.show-sql=true
         spring.jpa.properties.hibernate.format_sql=true
+	spring.jpa.hibernate.ddl-auto=none
 
 ```
 4.  Buat user database dan databasenya
@@ -1018,7 +1019,7 @@ Isi File `Kelurahan.java`
 @Entity @Table(name="kelurahan")
 public class Kelurahan {
     
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     @NotNull @NotEmpty 
@@ -1102,4 +1103,98 @@ isi data `sample-kelurahan.sql`
 	
 
 7.  Gunakan di aplikasi web ( Selesai )
+
+
+
+
+
+## REST API ##
+
+* Buat file KelurahanApiController.java
+
+```java
+
+@Controller
+public class KelurahanApiController {
+    @Autowired
+    private KelurahanDao kelurahanDao;
+    
+    @GetMapping("/api/kelurahan")
+    @ResponseBody
+    public Page<Kelurahan> dataKelurahan(Pageable page){
+        return kelurahanDao.findAll(page);
+    }
+}
+
+
+
+```
+# Penjelasan
+
+@Controller   -> sebagai annotation bahwa file dapat di proses
+@Autwired     -> perintah sebagai ganti dari setter and getter 
+@GetMapping   -> Menhandle Url
+@ResponseBody -> Menampilkan pesan langsung tanpa tergantung file lain
+
+@Pageable     -> 
+ 
+```json
+{
+  "content" : [ {
+    "id" : 1,
+    "kode" : "k-001",
+    "nama" : "kelurahan 001",
+    "kodepos" : "0512521"
+  }, {
+    "id" : 2,
+    "kode" : "k-003",
+    "nama" : "Kelurahan 003",
+    "kodepos" : "05172020"
+  }, {
+    "id" : 3,
+    "kode" : "k-004",
+    "nama" : "Kelurahan 004",
+    "kodepos" : "05182020"
+  } ],
+  "pageable" : {
+    "sort" : {
+      "sorted" : false,
+      "unsorted" : true,
+      "empty" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 3,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "totalPages" : 3,
+  "totalElements" : 7,
+  "last" : false,
+  "size" : 3,
+  "number" : 0,
+  "sort" : {
+    "sorted" : false,
+    "unsorted" : true,
+    "empty" : true
+  },
+  "first" : true,
+  "numberOfElements" : 3,
+  "empty" : false
+}
+
+```
+
+* http://localhost:12000/api/kelurahan?size=3
+* http://localhost:12000/api/kelurahan?size=3&page=0
+* http://localhost:12000/api/kelurahan?size=3&page=0&sort=kode
+* http://localhost:12000/api/kelurahan?size=3&page=0&sort=kode,desc
+
+
+
+## cari kelurahan by ID ##
+
+
+
+
 
